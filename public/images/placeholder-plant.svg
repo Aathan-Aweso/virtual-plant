@@ -1,0 +1,15 @@
+<svg width="1200" height="1200" viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="1200" rx="64" fill="#EFF4E8"/>
+  <circle cx="600" cy="310" r="210" fill="#F9E8BB"/>
+  <ellipse cx="600" cy="980" rx="260" ry="72" fill="#D3E0CC"/>
+  <path d="M610 830C610 650 620 560 650 452" stroke="#5D7844" stroke-width="26" stroke-linecap="round"/>
+  <path d="M649 451C763 445 849 384 887 291C759 272 675 321 649 451Z" fill="#5A964E"/>
+  <path d="M649 452C529 451 421 382 358 292C486 264 604 322 649 452Z" fill="#73A865"/>
+  <path d="M529 818C529 690 534 620 505 539" stroke="#5D7844" stroke-width="18" stroke-linecap="round"/>
+  <path d="M505 540C409 515 339 452 301 371C406 365 496 420 505 540Z" fill="#789F62"/>
+  <path d="M716 885H486C463 885 445 867 445 844V810H757V844C757 867 739 885 716 885Z" fill="#B57C52"/>
+  <path d="M468 810C486 726 536 656 598 656C660 656 717 727 735 810H468Z" fill="#C28A5D"/>
+  <text x="600" y="1060" text-anchor="middle" fill="#4B5F43" font-size="54" font-family="Georgia, serif">
+    Generate Gemini plant assets into /public/images
+  </text>
+</svg>
