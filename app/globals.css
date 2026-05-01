@@ -456,6 +456,46 @@ select {
   border: 1px dashed rgba(37, 60, 41, 0.18);
 }
 
+.tips-list {
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.tips-list li {
+  position: relative;
+  padding: 14px 18px 14px 38px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid var(--line);
+  line-height: 1.55;
+}
+
+.tips-list li::before {
+  content: "";
+  position: absolute;
+  left: 16px;
+  top: 22px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--leaf);
+  box-shadow: 0 0 0 4px rgba(63, 125, 59, 0.14);
+}
+
+.tips-list li strong {
+  color: var(--leaf-dark);
+}
+
+@media (max-width: 720px) {
+  .tips-list {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 900px) {
   .dashboard-grid {
     grid-template-columns: 1fr;

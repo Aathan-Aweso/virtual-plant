@@ -15,11 +15,47 @@ type ApiResult = {
   error?: string;
 };
 
+function getContextualTip(plant: ClientPlant): string {
+  const recentlyWatered = plant.lastWateredAt
+    ? Date.now() - new Date(plant.lastWateredAt).getTime() < 45 * 60 * 1000
+    : false;
+
+  if (plant.healthState === "wilted") {
+    return "Your plant is struggling. Settle into balanced moisture and gentle weather so it can recover before it slips back a stage.";
+  }
+  if (recentlyWatered && plant.moisture > 75) {
+    return "Just watered. Let the soil drink it in before topping up again — fresh waterings on already-damp soil cost health.";
+  }
+  if (plant.moisture > 82) {
+    return "The soil is waterlogged. Skip the watering can for now and let sunny weather draw it back to a healthy level.";
+  }
+  if (plant.moisture < 20) {
+    return "The soil is parched. A good watering will lift it back into the comfortable range.";
+  }
+  if (plant.moisture < 30) {
+    return "Soil is drifting dry. A modest watering will bring it back to the sweet spot.";
+  }
+  if (plant.healthState === "stressed") {
+    return "The plant is stressed. Keep moisture in the middle of the meter and avoid harsh weather while it recovers.";
+  }
+  if (!plant.isDaytime) {
+    return "Resting overnight. Conditions look healthy — growth picks back up when the sun is up.";
+  }
+  if (plant.currentWeather === "sunny") {
+    return "Excellent growing conditions. Keep an eye on the moisture meter — sunny stretches dry the soil faster.";
+  }
+  if (plant.currentWeather === "cloudy") {
+    return "Steady growing weather. Switching to sunny would push growth faster while moisture is well-balanced.";
+  }
+  return "Rain keeps the soil topped up but slows growth. Once moisture is comfortable, sunny skies will drive faster gains.";
+}
+
 export function PlantDashboard({ initialPlant, userEmail }: Props) {
   const router = useRouter();
   const [plant, setPlant] = useState(initialPlant);
   const [status, setStatus] = useState("");
   const [busyAction, setBusyAction] = useState<"water" | "weather" | "logout" | null>(null);
+  const tip = getContextualTip(plant);
 
   async function refreshPlant() {
     const response = await fetch("/api/plant");
@@ -159,9 +195,7 @@ export function PlantDashboard({ initialPlant, userEmail }: Props) {
               </button>
             </div>
 
-            <p className="note">
-              Overwatering and underwatering both reduce health. Balanced moisture and good daylight raise growth points faster.
-            </p>
+            <p className="note">{tip}</p>
           </section>
 
           <section className="panel">
@@ -182,6 +216,43 @@ export function PlantDashboard({ initialPlant, userEmail }: Props) {
             <div className={`status-line ${status && status.toLowerCase().includes("unable") ? "error" : ""}`}>{status}</div>
           </section>
         </div>
+      </section>
+
+      <section className="panel care-guide" style={{ marginTop: "24px" }}>
+        <h2 className="panel-title">Care guide</h2>
+        <p className="muted" style={{ marginTop: "8px" }}>
+          A handful of habits that take a seed all the way to a mature plant.
+        </p>
+        <ul className="tips-list">
+          <li>
+            <strong>Aim for the middle of the moisture meter.</strong> Both dry soil
+            and waterlogged roots stall growth and slowly drain health.
+          </li>
+          <li>
+            <strong>Pace your waterings.</strong> Pouring more onto already-damp soil
+            costs health — wait until the meter has eased back down before topping up.
+          </li>
+          <li>
+            <strong>Sunny daylight grows fastest.</strong> Cloudy days are steady, rainy
+            days are slowest. Rain is still useful when the soil is on the dry side.
+          </li>
+          <li>
+            <strong>Match the weather to the soil.</strong> Sunny skies dry it out, rain
+            tops it up. Use the weather chips to balance whichever way the meter is leaning.
+          </li>
+          <li>
+            <strong>Plants rest at night.</strong> Real growth happens during daylight,
+            so daytime visits do most of the heavy lifting.
+          </li>
+          <li>
+            <strong>Recover stressed plants gently.</strong> If health is low, settle
+            into balanced conditions and avoid swings — pushing harder can cost a stage.
+          </li>
+          <li>
+            <strong>Check in regularly.</strong> Time keeps moving while you&apos;re away,
+            so a quick visit catches drifting moisture before it bites.
+          </li>
+        </ul>
       </section>
     </main>
   );
